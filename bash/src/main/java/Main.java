@@ -21,6 +21,9 @@ public class Main {
                 session.processInput(input);
             } catch (final BashParseException e) {
                 System.err.println("Parsing error");
+                if (e.getMessage() != null) {
+                    System.out.println("Reason: " + e.getMessage());
+                }
             }
         }
     }

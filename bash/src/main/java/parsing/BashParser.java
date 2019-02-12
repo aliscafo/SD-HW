@@ -69,7 +69,11 @@ public class BashParser {
         for (final var unparsedToken : unparsedTokens) {
             tokens.add(applyScope(unparsedToken, scope));
         }
-        return CommandUnitFactory.constructCommandUnit(tokens);
+        try {
+            return CommandUnitFactory.constructCommandUnit(tokens);
+        } catch (final IllegalArgumentException e) {
+            throw new BashParseException(e.getMessage());
+        }
     }
 
     private static boolean checkInstructionForAssignment(final @NotNull String input) {

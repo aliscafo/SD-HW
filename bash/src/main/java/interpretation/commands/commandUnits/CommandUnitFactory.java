@@ -11,7 +11,8 @@ public class CommandUnitFactory {
         Map.entry("exit", CommandUnitFactory::createExitCommandUnit),
         Map.entry("pwd", CommandUnitFactory::createPwdCommandUnit),
         Map.entry("cat", CommandUnitFactory::createCatCommandUnit),
-        Map.entry("wc", CommandUnitFactory::createWcCommandUnit)
+        Map.entry("wc", CommandUnitFactory::createWcCommandUnit),
+        Map.entry("grep", CommandUnitFactory::createGrepCommandUnit)
     );
 
     public static CommandUnit constructCommandUnit(final List<String> tokens) {
@@ -47,4 +48,9 @@ public class CommandUnitFactory {
     private static CommandUnit createSystemCommandUnit(final List<String> args) {
         return new SystemCommandUnit(args);
     }
+
+    private static CommandUnit createGrepCommandUnit(final List<String> args) {
+        return new GrepCommandUnit(args);
+    }
+
 }
