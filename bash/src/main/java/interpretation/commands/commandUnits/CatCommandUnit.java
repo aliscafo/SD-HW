@@ -1,6 +1,8 @@
 package interpretation.commands.commandUnits;
 
+import interpretation.Session;
 import org.apache.commons.io.FileUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +24,7 @@ class CatCommandUnit implements CommandUnit {
 
     @SuppressWarnings("Duplicates")
     @Override
-    public String execute(final String input) {
+    public String execute(final String input, @NotNull Session session) {
         final String actualFile = input == null ? file : input;
         if (actualFile == null) {
             throw new IllegalArgumentException();

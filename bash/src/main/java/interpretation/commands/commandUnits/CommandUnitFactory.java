@@ -12,7 +12,9 @@ public class CommandUnitFactory {
         Map.entry("pwd", CommandUnitFactory::createPwdCommandUnit),
         Map.entry("cat", CommandUnitFactory::createCatCommandUnit),
         Map.entry("wc", CommandUnitFactory::createWcCommandUnit),
-        Map.entry("grep", CommandUnitFactory::createGrepCommandUnit)
+        Map.entry("grep", CommandUnitFactory::createGrepCommandUnit),
+        Map.entry("cd", CommandUnitFactory::createCdCommandUnit),
+        Map.entry("ls", CommandUnitFactory::createLsCommandUnit)
     );
 
     public static CommandUnit constructCommandUnit(final List<String> tokens) {
@@ -53,4 +55,11 @@ public class CommandUnitFactory {
         return new GrepCommandUnit(args);
     }
 
+    private static CommandUnit createCdCommandUnit(final List<String> args) {
+        return new CdCommandUnit(args);
+    }
+
+    private static CommandUnit createLsCommandUnit(final List<String> args) {
+        return new LsCommandUnit(args);
+    }
 }

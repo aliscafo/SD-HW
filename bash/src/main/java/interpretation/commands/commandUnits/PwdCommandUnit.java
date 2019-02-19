@@ -1,5 +1,8 @@
 package interpretation.commands.commandUnits;
 
+import interpretation.Session;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 import java.util.StringJoiner;
 
@@ -12,8 +15,8 @@ class PwdCommandUnit implements CommandUnit {
     }
 
     @Override
-    public String execute(final String input) {
-        return System.getProperty("user.dir");
+    public String execute(final String input, @NotNull Session session) {
+        return session.getCurDirectory();
     }
 
     @Override

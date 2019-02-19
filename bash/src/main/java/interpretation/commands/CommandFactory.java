@@ -1,5 +1,6 @@
 package interpretation.commands;
 
+import interpretation.Session;
 import interpretation.commands.commandUnits.CommandUnit;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,14 +22,14 @@ public class CommandFactory {
         }
 
         @Override
-        public void run() {
+        public void run(@NotNull Session session) {
             if (unitCommandsQueue.isEmpty()) {
                 return;
             }
             String commandData = getInitialInput();
             while (!unitCommandsQueue.isEmpty()) {
                 final CommandUnit commandUnit = unitCommandsQueue.poll();
-                commandData = commandUnit.execute(commandData);
+                commandData = commandUnit.execute(commandData, session);
             }
             processOutput(commandData);
         }

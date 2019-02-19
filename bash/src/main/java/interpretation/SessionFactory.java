@@ -25,6 +25,7 @@ public class SessionFactory {
     private static class SessionDummy implements Session {
 
         private final Scope scope = new Scope();
+        private String curDirectory = System.getProperty("user.dir");
 
         @Override
         public void processInput(@NotNull final String input) throws BashParseException {
@@ -38,6 +39,16 @@ public class SessionFactory {
         @Override
         public void setVariable(@NotNull final String name, @NotNull final String value) {
             scope.set(name, value);
+        }
+
+        @Override
+        public String getCurDirectory() {
+            return curDirectory;
+        }
+
+        @Override
+        public void setCurDirectory(@NotNull String newDirectoryName) {
+            curDirectory = newDirectoryName;
         }
     }
 

@@ -1,6 +1,8 @@
 package interpretation.commands.commandUnits;
 
+import interpretation.Session;
 import org.apache.commons.cli.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -40,7 +42,7 @@ class GrepCommandUnit implements CommandUnit {
     }
 
     @Override
-    public String execute(String input) {
+    public String execute(String input, @NotNull Session session) {
         if (input == null) {
             input = "";
         }

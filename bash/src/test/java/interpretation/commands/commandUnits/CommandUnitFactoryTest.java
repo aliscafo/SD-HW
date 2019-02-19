@@ -58,6 +58,14 @@ class CommandUnitFactoryTest {
                 CommandUnitFactory.constructCommandUnit(List.of("some", "cat", "wc")),
                 new SystemCommandUnit(List.of("some", "cat", "wc"))
         );
+        assertEquals(
+                CommandUnitFactory.constructCommandUnit(List.of("cd")),
+                new CdCommandUnit(List.of("cd"))
+        );
+        assertEquals(
+                CommandUnitFactory.constructCommandUnit(List.of("ls")),
+                new LsCommandUnit(List.of("ls"))
+        );
         assertThrows(
                 IllegalArgumentException.class,
                 () -> CommandUnitFactory.constructCommandUnit(List.of())

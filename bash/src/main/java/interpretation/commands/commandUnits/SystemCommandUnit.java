@@ -1,5 +1,8 @@
 package interpretation.commands.commandUnits;
 
+import interpretation.Session;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -15,7 +18,7 @@ class SystemCommandUnit implements CommandUnit {
     }
 
     @Override
-    public String execute(final String input) {
+    public String execute(final String input, @NotNull Session session) {
         final Process p;
         try {
             p = new ProcessBuilder(args).start();

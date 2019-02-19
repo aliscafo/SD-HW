@@ -1,5 +1,8 @@
 package interpretation.commands.commandUnits;
 
+import interpretation.Session;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 import java.util.StringJoiner;
 
@@ -15,7 +18,7 @@ class EchoCommandUnit implements CommandUnit {
     }
 
     @Override
-    public String execute(final String input) {
+    public String execute(final String input, @NotNull Session session) {
         final StringJoiner joiner = new StringJoiner(" ");
         for (final String arg : args) {
             joiner.add(arg);

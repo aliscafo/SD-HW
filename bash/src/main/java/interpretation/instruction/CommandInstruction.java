@@ -20,7 +20,7 @@ public class CommandInstruction implements Instruction {
 
     @Override
     public void execute(@NotNull final Session session) {
-        command.run();
+        command.run(session);
     }
 
     @Override
