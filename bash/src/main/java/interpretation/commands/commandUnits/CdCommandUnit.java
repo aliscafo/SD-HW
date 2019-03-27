@@ -29,7 +29,7 @@ public class CdCommandUnit implements CommandUnit {
         String newDirectory = args.get(0);
 
         Path newPath = session.getCurDirectory().resolve(newDirectory).normalize();
-        File newFile = new File(newPath.toString());
+        File newFile = newPath.toFile();
 
         if (!(newFile.isDirectory())) {
             return newFile.getName() + " is not a directory";
