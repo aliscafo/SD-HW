@@ -21,7 +21,7 @@ class SystemCommandUnit implements CommandUnit {
     public String execute(final String input, @NotNull Session session) {
         final Process p;
         try {
-            p = new ProcessBuilder(args).start();
+            p = new ProcessBuilder(args).directory(session.getCurDirectory().toFile()).start();
             p.waitFor();
         } catch (final IOException | InterruptedException e) {
             System.err.println("Failed to execute command '" + args.get(0) + "'");
