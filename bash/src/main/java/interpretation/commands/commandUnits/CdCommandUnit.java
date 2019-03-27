@@ -12,7 +12,7 @@ public class CdCommandUnit implements CommandUnit {
     private final List<String> args;
 
     CdCommandUnit(final List<String> args) {
-        if (args.isEmpty() || !args.get(0).equals("cd")) {
+        if (args.isEmpty() || !args.get(0).equals("cd") || args.size() > 2) {
             throw new IllegalArgumentException();
         }
         this.args = args.subList(1, args.size());

@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.List;
 
 /*
@@ -31,10 +32,15 @@ class WcCommandUnit implements CommandUnit {
     @SuppressWarnings("Duplicates")
     @Override
     public String execute(final String input, @NotNull Session session) {
-        final String actualFile = input == null ? file : input;
+        String actualFile = input == null ? file : input;
         if (actualFile == null) {
             throw new IllegalArgumentException();
         }
+
+        if (!Paths.get(actualFile).isAbsolute()) {
+            actualFile = session.getCurDirectory().resolve(actualFile).toString();
+        }
+
         final File file = new File(actualFile);
         try {
             final String content =  FileUtils.readFileToString(file, (String) null);
