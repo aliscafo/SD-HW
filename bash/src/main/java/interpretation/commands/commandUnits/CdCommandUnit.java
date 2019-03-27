@@ -4,6 +4,7 @@ import interpretation.Session;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -21,16 +22,20 @@ public class CdCommandUnit implements CommandUnit {
     public String execute(final String input, @NotNull Session session) {
         if (args.isEmpty()) {
             String homeDirectory = System.getProperty("user.home");
-            session.setCurDirectory(homeDirectory);
+            session.setCurDirectory(Paths.get(homeDirectory));
             return null;
         }
 
         String newDirectory = args.get(0);
-        if (Paths.get(newDirectory).isAbsolute()) {
-            session.setCurDirectory(newDirectory);
-        } else {
-            session.setCurDirectory(session.getCurDirectory() + File.separator + newDirectory);
+
+        Path newPath = session.getCurDirectory().resolve(newDirectory).normalize();
+        File newFile = new File(newPath.toString());
+
+        if (!(newFile.isDirectory())) {
+            return newFile.getName() + " is not a directory";
         }
+
+        session.setCurDirectory(session.getCurDirectory().resolve(newDirectory).normalize());
 
         return null;
     }
@@ -41,6 +46,15 @@ public class CdCommandUnit implements CommandUnit {
             return args.equals(((CdCommandUnit) obj).args);
         }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + "cd".hashCode();
+        result = prime * result + ((args == null) ? 0 : args.hashCode());
+        return result;
     }
 
 }

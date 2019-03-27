@@ -3,13 +3,12 @@ package interpretation.commands.commandUnits;
 import interpretation.Session;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class LsCommandUnit implements CommandUnit {
@@ -24,38 +23,53 @@ public class LsCommandUnit implements CommandUnit {
 
     @Override
     public String execute(final String input, @NotNull Session session) {
-        String directory;
-
         if (args.isEmpty()) {
-            directory = session.getCurDirectory();
-        } else {
-            String newDirectory = args.get(0);
-            if (Paths.get(newDirectory).isAbsolute()) {
-                directory = newDirectory;
-            } else {
-               directory = session.getCurDirectory() + File.separator + newDirectory;
+            args.add(session.getCurDirectory().toString());
+        }
+
+        StringBuilder res = new StringBuilder();
+
+        boolean isOneArg = args.size() == 1;
+
+        for (int i = 0; i < args.size(); i++) {
+            String curArg = args.get(i);
+            Path directory;
+
+            directory = session.getCurDirectory().resolve(curArg).normalize();
+
+            if (!isOneArg) {
+                res.append(Paths.get(curArg));
+                res.append(": ");
+            }
+
+            try (Stream<Path> paths = Files.walk(directory, 1)) {
+                String lsRes = paths
+                        .filter(path -> {
+                            try {
+                                return !Files.isHidden(path);
+                            } catch (IOException e) {
+                                return false;
+                            }
+                        })
+                        .map(Path::getFileName)
+                        .map(Path::toString)
+                        .skip(1)
+                        .collect(Collectors.joining(System.lineSeparator()));
+
+                if (!isOneArg) {
+                    res.append(System.lineSeparator());
+                }
+                res.append(lsRes);
+                if (i != args.size() - 1) {
+                    res.append(System.lineSeparator());
+                    res.append(System.lineSeparator());
+                }
+            } catch (IOException e) {
+                res.append("Failed to walk the directory");
             }
         }
 
-        try (Stream<Path> paths = Files.walk(Paths.get(directory), 1)) {
-            Optional<String> res = paths
-                    .filter(path -> {
-                        try {
-                            return !Files.isHidden(path);
-                        } catch (IOException e) {
-                            return false;
-                        }
-                    })
-                    .map(Path::getFileName)
-                    .map(Path::toString)
-                    .skip(1)
-                    .reduce((path, path2) -> path + "\n" + path2);
-
-            return res.orElse("");
-        } catch (IOException e) {
-            System.err.println("Failed to walk the directory '" + directory + "'");
-            return "";
-        }
+        return res.toString();
     }
 
     @Override
@@ -65,5 +79,4 @@ public class LsCommandUnit implements CommandUnit {
         }
         return false;
     }
-
 }

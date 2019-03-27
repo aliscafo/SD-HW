@@ -5,6 +5,8 @@ import org.jetbrains.annotations.NotNull;
 import parsing.BashParseException;
 import parsing.BashParser;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 public class SessionFactory {
@@ -25,7 +27,7 @@ public class SessionFactory {
     private static class SessionDummy implements Session {
 
         private final Scope scope = new Scope();
-        private String curDirectory = System.getProperty("user.dir");
+        private Path curDirectory = Paths.get(System.getProperty("user.dir"));
 
         @Override
         public void processInput(@NotNull final String input) throws BashParseException {
@@ -42,12 +44,12 @@ public class SessionFactory {
         }
 
         @Override
-        public String getCurDirectory() {
+        public Path getCurDirectory() {
             return curDirectory;
         }
 
         @Override
-        public void setCurDirectory(@NotNull String newDirectoryName) {
+        public void setCurDirectory(@NotNull Path newDirectoryName) {
             curDirectory = newDirectoryName;
         }
     }

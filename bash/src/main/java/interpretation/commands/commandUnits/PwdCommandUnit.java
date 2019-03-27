@@ -16,7 +16,7 @@ class PwdCommandUnit implements CommandUnit {
 
     @Override
     public String execute(final String input, @NotNull Session session) {
-        return session.getCurDirectory();
+        return session.getCurDirectory().toString();
     }
 
     @Override

@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.List;
 
 class CatCommandUnit implements CommandUnit {
@@ -25,16 +26,21 @@ class CatCommandUnit implements CommandUnit {
     @SuppressWarnings("Duplicates")
     @Override
     public String execute(final String input, @NotNull Session session) {
-        final String actualFile = input == null ? file : input;
+        String actualFile = input == null ? file : input;
+
         if (actualFile == null) {
             throw new IllegalArgumentException();
         }
+
+        if (!Paths.get(actualFile).isAbsolute()) {
+            actualFile = session.getCurDirectory().resolve(actualFile).toString();
+        }
+
         final File file = new File(actualFile);
         try {
             return FileUtils.readFileToString(file, (String) null);
         } catch (final IOException e) {
-            System.err.println("Failed to read from file '" + file.getName() + "'");
-            return null;
+            return "Failed to read from file '" + file.getName() + "'";
         }
     }
 
@@ -44,6 +50,7 @@ class CatCommandUnit implements CommandUnit {
             if (file == null) {
                 return ((CatCommandUnit) obj).file == null;
             }
+
             return file.equals(((CatCommandUnit) obj).file);
         }
         return false;

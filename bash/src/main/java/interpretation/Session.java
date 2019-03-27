@@ -3,6 +3,8 @@ package interpretation;
 import org.jetbrains.annotations.NotNull;
 import parsing.BashParseException;
 
+import java.nio.file.Path;
+
 /**
  * Interface for basic variant of session. May have state.
  */
@@ -11,7 +13,7 @@ public interface Session {
 
     void setVariable(@NotNull String name, @NotNull String value);
 
-    String getCurDirectory();
+    Path getCurDirectory();
 
-    void setCurDirectory(@NotNull String newDirectoryName);
+    void setCurDirectory(@NotNull Path newDirectoryName);
 }
