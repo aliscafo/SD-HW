@@ -8,6 +8,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+/**
+ * Command for changing the current directory.
+ */
 public class CdCommandUnit implements CommandUnit {
     private final List<String> args;
 

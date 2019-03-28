@@ -7,12 +7,16 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Command for listing directory contents. Gets the name of directory(ies) or nothing(= current directory).
+ */
 public class LsCommandUnit implements CommandUnit {
-    private final List<String> args;
+    private List<String> args;
 
     LsCommandUnit(final List<String> args) {
         if (args.isEmpty() || !args.get(0).equals("ls")) {
@@ -24,6 +28,7 @@ public class LsCommandUnit implements CommandUnit {
     @Override
     public String execute(final String input, @NotNull Session session) {
         if (args.isEmpty()) {
+            args = new ArrayList<>();
             args.add(session.getCurDirectory().toString());
         }
 
@@ -54,6 +59,7 @@ public class LsCommandUnit implements CommandUnit {
                         .map(Path::getFileName)
                         .map(Path::toString)
                         .skip(1)
+                        .sorted()
                         .collect(Collectors.joining(System.lineSeparator()));
 
                 if (!isOneArg) {
